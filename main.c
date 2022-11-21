@@ -9,6 +9,9 @@ void imprimeMatriz(int m[][JASIG]);
 void rellenaMatrizAleatorio(int m[][JASIG]);
 int numAlumnosSuspensas(int m[][JASIG], int susp);
 float mediaAsignatura(int m[][JASIG],int asig);
+float mediaAlumno(int m[][JASIG],int alumno);
+void ordenaInsercion(float v[][2], int prim, int ultm);
+void imprimirOrdenado(int m[][JASIG]);
 
 int main() {
     int notas[IALUM][JASIG];
@@ -22,7 +25,7 @@ int main() {
     for (int i = 0; i < JASIG; ++i) {
         printf("\nLa media de la asignatura %d es: %.2f",i+1, mediaAsignatura(notas,i));
     }
-
+    imprimirOrdenado(notas);
     return 0;
 }
 
@@ -82,6 +85,41 @@ float mediaAsignatura(int m[][JASIG],int asig){
     return media/IALUM;
 }
 
-void imprimirOrdenado(m[][JASIG]){
+void imprimirOrdenado(int m[][JASIG]){
+    float media=0;
+    float orden[IALUM][2];
+    for (int i = 0; i < IALUM; ++i) {
+        orden[i][0]=(float)i;
+        orden[i][1]= mediaAlumno(m,i);
+    }
+    ordenaInsercion(orden,0,IALUM-1);
+    printf("\n");
+    for (int i = 0; i < IALUM; ++i) {
+        printf("\nNota media: %.2f. Alumno: %.f",orden[i][1],orden[i][0]);
+    }
+    printf("\n");
+}
 
+float mediaAlumno(int m[][JASIG],int alumno){
+    float media=0;
+    for (int i = 0; i < JASIG; ++i) {
+        media+=(float)m[alumno][i];
+    }
+    return media/JASIG;
+}
+
+void ordenaInsercion(float v[][2], int prim, int ultm){
+    int i,j;
+    float x,pos;
+    for(i=prim+1; i<=ultm; i++)
+    {
+        x=v[i][1];
+        pos=v[i][0];
+        j=i-1;
+        while(j>=prim && x<v[j][1]) {
+            v[j+1][1]=v[j][1];
+            v[j+1][0]=v[j][0];
+            j--; }
+        v[j+1][0]=pos;
+        v[j+1][1]=x; }
 }
